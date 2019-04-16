@@ -1,13 +1,12 @@
 # 描述一个运行时间为 θ(nlgn) 的算法。给定 n 个整数的集合 S 和另一个整数 x ，该算法能确定 S 中是否存在两个其和刚好为 x 的元素
 
-
 # 方法1：先排序-后用二分查找，时间复杂度 θ(nlgn)
 
 def twoSum(S, x):
   S = MergeSort(S, 0, len(S)-1)
   
-  for num in S:
-    if BinarySearch(S, x-num) != -1:
+  for i in range(0, len(S)):
+    if BinarySearch(S, x-S[i]) != -1 and BinarySearch(S, x-S[i]) != i:  # 排除掉同一个元素的情况
       return True
       
   return False
