@@ -1,7 +1,6 @@
 # 描述一个运行时间为 θ(nlgn) 的算法。给定 n 个整数的集合 S 和另一个整数 x ，该算法能确定 S 中是否存在两个其和刚好为 x 的元素
 
 # 方法1：先排序-后用二分查找，时间复杂度 θ(nlgn)
-
 def twoSum(S, x):
   S = MergeSort(S, 0, len(S)-1)
   
@@ -9,6 +8,23 @@ def twoSum(S, x):
     if BinarySearch(S, x-S[i]) != -1 and BinarySearch(S, x-S[i]) != i:  # 排除掉同一个元素的情况
       return True
       
+  return False
+
+# 方法2：先排序-后用两个指针分别从头和从尾开始检索，时间复杂度 θ(nlgn)
+
+def twoSum_II(S, x):
+  S = MergeSort(S, 0, len(S)-1)
+  
+  i = 0
+  j = len(S) - 1
+  
+  while i < j:
+     if S[i] + S[j] == x:
+         return True
+     elif S[i] + S[j] > x:
+         j -= 1
+     else:
+          i += 1
   return False
  
 # 归并排序
@@ -64,3 +80,4 @@ def BinarySearch(A, p):
 alist = [6, 5, 3, 1, 8, 7, 2, 4]
 x = 8
 print(twoSum(alist, x))
+print(twoSum_II(alist, x))
