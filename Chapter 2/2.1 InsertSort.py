@@ -1,6 +1,10 @@
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
 # 插入排序
 
 # 特点：（1）适用于少量元素的排序（2）原址排序（即最多只有常数个数字存储在数组外面）（3）联想：从桌面上拿扑克牌并放在手中牌正确的位置
+
+# 时间复杂度：最坏情况：输入数组逆序 \theta(n^2)；最好情况：输入数组正序 O(n)；一般情况O(n^2)
 
 # 非降序排列
 def InsertSort(A):
