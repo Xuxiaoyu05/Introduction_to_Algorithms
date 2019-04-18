@@ -19,8 +19,6 @@ def Max_Heapify(A, root, heapsize):
   if right < heapsize and A[right] > A[larger]:
     larger = right
 
-  
-
   if larger != root:
     A[root], A[larger] = A[larger], A[root]
     Max_Heapify(A, larger, heapsize)
@@ -35,6 +33,6 @@ def Build_Max_Heap(A):
     
 # 构建最小堆：时间复杂度 O(n)
 def Build_Min_Heap(A):
-  heapsize = len(A) - 1
+  heapsize = len(A)
   for i in range(heapsize//2-1, -1, -1):
     Min_Heapify(A, i, heapsize)
