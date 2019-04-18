@@ -17,9 +17,9 @@ def Max_Heapify(A, root, heapsize):
   right = 2 * root + 2
   
   larger = root
-  if left <= heapsize and A[left] > A[larger]:
+  if left < heapsize and A[left] > A[larger]:  # 注意，此处为 < heapsize
      larger = left
-  if right <= heapsize and A[right] > A[larger]:
+  if right < heapsize and A[right] > A[larger]:
     larger = right
   
   if larger != root:
@@ -27,7 +27,7 @@ def Max_Heapify(A, root, heapsize):
     Max_Heapify(A, larger, heapsize)
   
 def Build_Max_Heap(A):
-  heapsize = len(A) - 1
+  heapsize = len(A)
   for i in range(heapsize//2-1, -1, -1):
     Max_Heapify(A, i, heapsize)
   
@@ -36,8 +36,7 @@ def HeapSort(A):
     heapsize = len(A) - 1
     for i in range(heapsize, 0, -1):
        A[0], A[i] = A[i], A[0]
-       heapsize -= 1
-       Max_Heapify(A, 0, heapsize) 
+       Max_Heapify(A, 0, i)  # 此处的heapsize为i
     return A
         
 alist = [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
