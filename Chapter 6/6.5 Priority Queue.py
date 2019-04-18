@@ -1,4 +1,4 @@
-# 优先队列
+# 优先队列：在一个包含 n 个元素的堆中，所有优先队列的操作都可以在O(lgn)
 
 # 定义：（1）是一种用来维护由一组元素构成的集合S的数据结构。其中的每一个元素都有一个相关的值，称为关键字。《算法导论》
 #       （2）通俗定义：普通的队列是一种先进先出的数据结构，元素在队尾追加，在队头删除。在优先队列中，元素被赋予优先级。
@@ -18,8 +18,8 @@
 #   （4）Increase-Key(S, x, k)：将元素 x 的关键字增加到 k（假设 k 的值不小于 x 的原关键字）
 
 def Max_Heapify(A, root, heapsize):
-  left = 2 * i + 1
-  right = 2 * i + 2
+  left = 2 * root + 1
+  right = 2 * root + 2
   
   larger = root
   if left <= heapsize and A[left] > A[larger]:
@@ -36,7 +36,7 @@ def Max_Heapify(A, root, heapsize):
 def Heap_Maximum(A):
   return A[0]
 
-# 去掉并返回 S 中的具有最大关键字的元素，时间复杂度θ(lgn)
+# 去掉并返回 S 中的具有最大关键字的元素，时间复杂度O(lgn)
 def Heap_Extract_Max(A):
   if len(A) < 1:
     return "heap underflow"
@@ -51,8 +51,8 @@ def Heap_Extract_Max(A):
 def Parent(i):
   return (i-1)//2         # Python 中 i 结点的父结点
 
-# 将元素 x 的关键字增加到 k（假设 k 的值不小于 x 的原关键字），时间复杂度θ(lgn)
-def Heap_Increase_Key(A, i, k):
+# 将元素 x 的关键字增加到 k（假设 k 的值不小于 x 的原关键字），时间复杂度O(lgn)
+def Heap_Increase_Key(A, i, key):
   if key < A[i]:
     return "New key is smaller than current key."
   A[i] = key
@@ -60,11 +60,25 @@ def Heap_Increase_Key(A, i, k):
     A[i], A[Parent(i)] = A[Parent(i)], A[i]
     i = Parent(i)
     
-# 将元素 x 插入集合 S 中，时间复杂度
-# 实现过程：
+  return A
     
+# 将元素 x 插入集合 S 中，时间复杂度O(lgn)
+# 输入：要被插入到最大堆 A 中的新元素的关键字
+# 实现过程：首先增加一个关键字为 -inf 的叶结点来扩展最大堆，然后调用Heap_Increase_Key为新结点设置对应的关键字，同时保持最大堆的性质
+
+def Heap_Insert(A, x):
+  # A.heapsize = A.heapsize + 1
+  # A[A.heapsize] = inf
   
+  A.append(float("-inf"))
+  heapsize = len(A) - 1
+  Heap_Increase_Key(A, heapsize, x)
+  
+  return A
 
-
-
-
+  
+alist = [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
+print(Heap_Maximum(alist))
+print(Heap_Extract_Max(alist))
+print(Heap_Increase_Key(alist, 8, 15))
+print(Heap_Insert(alist, 12))
