@@ -7,10 +7,10 @@ def Max_Heapify(A, root, heapsize):
 
   larger = root
   
-  if left <= heapsize and A[left] > A[larger]:
+  if left < heapsize and A[left] > A[larger]:
     larger = left 
 
-  if right <= heapsize and A[right] > A[larger]:
+  if right < heapsize and A[right] > A[larger]:
     larger = right
 
  
@@ -22,7 +22,7 @@ def Max_Heapify(A, root, heapsize):
 # 时间复杂度 O(n)
 def Build_Max_Heap(A):
 
-  heapsize = len(A) - 1   # 注意heapsize 为len(A) - 1
+  heapsize = len(A)  
 
   for i in range(heapsize//2-1, -1, -1):    # 在Python中，由于下标是从0开始，所以heapsize//2-1是最后一个非叶子结点
 
