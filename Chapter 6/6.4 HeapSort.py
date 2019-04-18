@@ -10,6 +10,8 @@
 #   （4）重复上述过程，直到堆的大小从 n-1 降到 2
 
 # 堆排序的时间复杂度 O(nlgn)， 同时堆排序是原址排序（任何时候都只需要常数个额外的元素空间存储临时数据）
+# O(nlgn) = 调用Build_Max_Heap的时间为O(n) + n-1次调用Max_Heapify，每次的时间为O(lgn)
+
 def Max_Heapify(A, root, heapsize):
   left = 2 * root  + 1
   right = 2 * root + 2
