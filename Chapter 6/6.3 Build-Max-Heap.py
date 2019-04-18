@@ -8,12 +8,12 @@
 
 # 时间复杂度：O(n), 可在线性时间内，将一个无序数组构造成为一个最大堆
 def Build_Max_Heap(A):
-  heapsize = len(A)
+  heapsize = len(A) - 1
   for i in range(heapsize//2-1, -1, -1):    # 在Python中，由于下标是从0开始，所以heapsize//2-1是最后一个非叶子结点
     Max_Heapify(A, i, heapsize)
     
 # 构建最小堆：时间复杂度 O(n)
 def Build_Min_Heap(A):
-  heapsize = len(A)
+  heapsize = len(A) - 1
   for i in range(heapsize//2-1, -1, -1):
     Min_Heapify(A, i, heapsize)
