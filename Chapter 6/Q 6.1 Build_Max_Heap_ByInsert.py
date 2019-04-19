@@ -3,25 +3,24 @@
 def Parent(i):
   return (i-1)//2
   
-def Heap_Increase_Key(B, i, key):
-  if key < B[i]:
+def Heap_Increase_Key(A, i, key):
+  if key < A[i]:
     return
-  B[i] = key
-  while i > 0 and B[Parent(i)] < B[i]:
-    B[i], B[Parent(i)] = B[Parent(i)], B[i]
+  A[i] = key
+  while i > 0 and A[Parent(i)] < A[i]:
+    A[i], A[Parent(i)] = A[Parent(i)], A[i]
     i = Parent(i)
 
-def Max_Heap_Insert(B, x):
-  B.append(float("-inf"))
-  heapsize = len(B) - 1
-  Heap_Increase_Key(B, heapsize, x)
+def Max_Heap_Insert(A, x, heapsize):
+  A[heapsize] = float("-inf")
+  Heap_Increase_Key(A, heapsize, x)
   
 def Build_Max_Heap_ByInsert(A):
-  B = []
-  B.append(A[0])
+  heapsize = 1
   for i in range(1, len(A)):
-    Max_Heap_Insert(B, A[i])
-  return B
+    Max_Heap_Insert(A, A[i], heapsize)
+    heapsize += 1
+  return A
 
 def Max_Heapify(A, root, heapsize):
   left = 2 * root + 1
@@ -41,8 +40,8 @@ def Build_Max_Heap(A):
   heapsize = len(A) - 1
   for i in range((heapsize-1)//2, -1, -1):
     Max_Heapify(A, i, heapsize)
-   return A
+  return A
   
 alist = [1,2,3,4,5,6,7,8]
-print(Build_Max_Heap_ByInsert(alist))
-print(Build_Max_Heap(alist))
+print(Build_Max_Heap_ByInsert(alist))  # 最大堆结果为[8, 7, 6, 4, 3, 2, 5, 1]
+print(Build_Max_Heap(alist))  # 最大堆结果为[8, 5, 7, 4, 1, 6, 3, 2]
