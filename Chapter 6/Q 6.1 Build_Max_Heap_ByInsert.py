@@ -11,10 +11,12 @@ def Heap_Increase_Key(A, i, key):
     A[i], A[Parent(i)] = A[Parent(i)], A[i]
     i = Parent(i)
 
+# 时间复杂度O(n)
 def Max_Heap_Insert(A, x, heapsize):
   A[heapsize] = float("-inf")
   Heap_Increase_Key(A, heapsize, x)
-  
+
+# 最坏情况下，时间复杂度θ(nlgn)
 def Build_Max_Heap_ByInsert(A):
   heapsize = 1
   for i in range(1, len(A)):
@@ -45,3 +47,6 @@ def Build_Max_Heap(A):
 alist = [1,2,3,4,5,6,7,8]
 print(Build_Max_Heap_ByInsert(alist))  # 最大堆结果为[8, 7, 6, 4, 3, 2, 5, 1]
 print(Build_Max_Heap(alist))  # 最大堆结果为[8, 5, 7, 4, 1, 6, 3, 2]
+
+# 6.1(a)：当输入数据相同的时候，Build-Max-Heap和Build_Max_Heap_ByInsert生成的堆不总是一样，如上所示。
+# 6.1(b)：在最坏情况下，Build_Max_Heap_ByInsert建立一个包含 n 个元素的堆的时间复杂度是θ(nlgn)。lg2+lg3+...+lgn = lg(n!) = θ(nlgn)
