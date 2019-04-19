@@ -57,7 +57,8 @@ def Min_Heap_Insert(A, x):
   Heap_Decrease_Key(A, heapsize, x)
   return A
 
-alist = []
-print(Heap_Minimum(A))
-print(Heap_Extract_Min(A))
-print()
+alist = [1, 5, 3, 7, 9, 10, 12, 11, 16, 13]
+print(Heap_Minimum(alist))
+print(Heap_Extract_Min(alist))
+print(Heap_Decrease_Key(alist, 8, 2))
+print(Min_Heap_Insert(alist, 4))
