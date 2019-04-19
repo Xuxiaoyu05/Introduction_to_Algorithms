@@ -22,4 +22,4 @@ def Heap_Delete(A, i):
   return A[:-1]
   
 alist = [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
-print(Heap_Delete(alist, 1))
+print(Heap_Delete(alist, 2))
