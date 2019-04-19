@@ -15,7 +15,7 @@ def Parent(i, d):
 def Children(i, c, d):
   return d * i + c + 1  # 0 <= c < d
 
-# 维护 d 叉堆性质，时间复杂度O(logd(n))
+# 维护 d 叉堆性质，时间复杂度O(dlogd(n))
 def D_Heap_Max_Heapify(A, root, heapsize):
   larger = root
   for c in range(0, d):
@@ -33,7 +33,7 @@ def Build_D_Heap(A):
     D_Heap_Max_Heapify(A, i, heapsize)
   return A
 
-# 去掉并返回 S 中的具有最大关键字的元素，时间复杂度O(logd(n))
+# 去掉并返回 S 中的具有最大关键字的元素，时间复杂度O(dlogd(n))
 def D_Heap_Extract_Max(A):
   if len(A) < 1:
     return
