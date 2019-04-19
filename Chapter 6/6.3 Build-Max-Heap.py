@@ -30,9 +30,11 @@ def Build_Max_Heap(A):
   heapsize = len(A)
   for i in range(heapsize//2-1, -1, -1):    # 在Python中，由于下标是从0开始，所以heapsize//2-1是最后一个非叶子结点
     Max_Heapify(A, i, heapsize)
+  return A
     
 # 构建最小堆：时间复杂度 O(n)
 def Build_Min_Heap(A):
   heapsize = len(A)
   for i in range(heapsize//2-1, -1, -1):
     Min_Heapify(A, i, heapsize)
+  return A
