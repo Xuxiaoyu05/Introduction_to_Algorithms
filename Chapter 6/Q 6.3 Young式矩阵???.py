@@ -17,18 +17,67 @@
 
 # 6.3(f)：设计一个时间复杂度 O(m+n) 的算法，它可以用来判断一个给定的数是否存储在 m*n 的 Young 式矩阵中。
 
-def MainTain_Young(Y, i, j):
+
+# 保持 Young 式矩阵的性质：将 A[i, j] 与其邻居（右边 A[i][j+1]，下边 A[i+1][j]）比较，并且将其与最小值交换。
+# 当 A[i, j] 小于其周围邻居时，程序终止。
+def MainTain_Young(Y, i, j, m, n):
   smaller_i, smaller_j = i, j
-  while i < m and Y[i+1][j] < Y[i][j]:
-    Y[i][j], Y[i+1][j] = Y[i+1][j], Y[i][j]
+  
+  if i < m and Y[i+1][j] < Y[i][j]:  # 下边
+    smaller_i, smaller_j = i+1, j
     
-  while j < n and Y[i][j+1] < 
+  if j < n and Y[i][j+1] < Y[smaller_i][smaller_j]:  # 右边
+    smaller_i, smaller_j = i, j+1
   
+  if smaller_i != i or smaller_j != j:
+    Y[i][j], Y[smaller_i][smaller_j] = Y[smaller_i][smaller_j], Y[i][j]
+    MainTain_Young(Y, smaller_i, smaller_j, m, n)
   
-  
-  
-def Extract-Min(Y):
+
+# 去掉并返回 Young 式矩阵中的最小值，时间复杂度 O(m + n)
+def Young_Extract_Min(Y, m, n):
   min = Y[0][0]
   Y[0][0] = float("+inf")
-  Maintain_Young(Y, 0, 0)
+  MainTain_Young(Y, 0, 0, m, n)
+  #   print(Y)    # 结果应为[[3, 8, 12, 14], [4, 9, 16, inf], [5, inf, inf, inf], [inf, inf, inf, inf]]
   return min
+
+
+def Maintain_Young_II(Y, i, j, m, n):
+  position_i, position_j = i, j
+  
+  if i > 0 and Y[i-1][j] > Y[i][j]:  # 上边
+    position_i, position_j = i-1, j
+  if j > 0 and Y[i][j-1] > Y[position_i][position_j]:  # 左边
+    position_i, position_j = i, j-1
+  
+  if position_i != i or position_j != j:
+    Y[i][j], Y[position_i][position_j] = Y[position_i][position_j], Y[i][j]
+    Maintain_Young_II(Y, position_i, position_j, m, n)
+    
+    
+def Young_Insert(Y, key, m, n):
+  if Y[m][n] != float("+inf"):
+    return "Young Matrix is full."
+  
+  Y[m][n] = key
+  Maintain_Young_II(Y, m, n, m, n)
+  return Y
+  
+matrix = [[2, 3, 12, 14], [4, 8, 16, float("+inf")], [5, 9, float("+inf"), float("+inf")],
+          [float("+inf"), float("+inf"), float("+inf"), float("+inf")]]
+
+m = len(matrix)-1
+n = len(matrix[0])-1
+# print(Young_Extract_Min(matrix, m, n))
+print(Young_Insert(matrix, 6, m, n))
+
+
+
+
+
+
+
+
+
+
