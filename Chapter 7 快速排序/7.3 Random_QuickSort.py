@@ -24,7 +24,7 @@ def Random_Partition(A, p, r):
   A[p], A[i] = A[i], A[p]
   return Partition(A, p, r)
  
-# 期望运行时间 θ(nlgn)
+# 在输入元素互异的情况下，期望运行时间 θ(nlgn)
 def Random_QuickSort(A, p, r):
   if p < r:
     q = Random_Partition(A, p, r)
