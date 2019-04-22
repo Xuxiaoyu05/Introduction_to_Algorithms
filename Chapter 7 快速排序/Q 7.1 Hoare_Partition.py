@@ -4,10 +4,10 @@ def Hoare_Partition(A, p, r):
   pivot = A[p]
   i, j = p, r
   
-  while True:
-    while A[j] >= pivot and j >= 0:
+  while i != j:
+    while A[j] >= pivot and i < j:
       j -= 1
-    while A[i] <= pivot and i <= r:
+    while A[i] <= pivot and i < j:
       i += 1
     
     if i < j:
@@ -25,5 +25,5 @@ def QuickSort(A, p, r):
     QuickSort(A, q+1, r)
   return A
   
-alist = [54, 26, 93, 17, 77, 31, 44, 55, 20]
+alist = [13, 19, 9, 5, 12, 8, 7, 4, 11, 26, 21]
 print(QuickSort(alist, 0, len(alist)-1)) 
