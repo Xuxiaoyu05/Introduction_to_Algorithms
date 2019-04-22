@@ -18,7 +18,7 @@
 # 6.3(f)：设计一个时间复杂度 O(m+n) 的算法，它可以用来判断一个给定的数是否存储在 m*n 的 Young 式矩阵中。
 
 def MainTain_Young(Y, i, j):
-  smaller = Y
+  smaller_i, smaller_j = i, j
   while i < m and Y[i+1][j] < Y[i][j]:
     Y[i][j], Y[i+1][j] = Y[i+1][j], Y[i][j]
     
@@ -30,9 +30,5 @@ def MainTain_Young(Y, i, j):
 def Extract-Min(Y):
   min = Y[0][0]
   Y[0][0] = float("+inf")
-  
-  
-  
-  
-  
+  Maintain_Young(Y, 0, 0)
   return min
