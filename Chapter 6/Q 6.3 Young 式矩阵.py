@@ -18,6 +18,8 @@
 # 6.3(f)：设计一个时间复杂度 O(m+n) 的算法，它可以用来判断一个给定的数是否存储在 m*n 的 Young 式矩阵中。
 
 
+import math
+
 # 保持 Young 式矩阵的性质：将 A[i, j] 与其邻居（右边 A[i][j+1]，下边 A[i+1][j]）比较，并且将其与最小值交换。
 # 当 A[i, j] 小于其周围邻居时，程序终止。
 def MainTain_Young(Y, i, j, m, n):
@@ -46,7 +48,7 @@ def Young_Extract_Min(Y, m, n):
 def Maintain_Young_II(Y, i, j, m, n):
   position_i, position_j = i, j
   
-  if i > 0 and Y[i-1][j] > Y[i][j]:  # 上边
+  if i > 0 and Y[i-1][j] > Y[i][j]:  # 上边（必须先上后左）
     position_i, position_j = i-1, j
   if j > 0 and Y[i][j-1] > Y[position_i][position_j]:  # 左边
     position_i, position_j = i, j-1
@@ -55,7 +57,7 @@ def Maintain_Young_II(Y, i, j, m, n):
     Y[i][j], Y[position_i][position_j] = Y[position_i][position_j], Y[i][j]
     Maintain_Young_II(Y, position_i, position_j, m, n)
     
-    
+# 向 Young 式矩阵中插入值，时间复杂度 O(m + n)
 def Young_Insert(Y, key, m, n):
   if Y[m][n] != float("+inf"):
     return "Young Matrix is full."
@@ -64,20 +66,50 @@ def Young_Insert(Y, key, m, n):
   Maintain_Young_II(Y, m, n, m, n)
   return Y
   
+# matrix = [[2, 3, 12, 14], [4, 8, 16, float("+inf")], [5, 9, float("+inf"), float("+inf")],
+#           [float("+inf"), float("+inf"), float("+inf"), float("+inf")]]
+
+# m = len(matrix)-1
+# n = len(matrix[0])-1
+# print(Young_Extract_Min(matrix, m, n))
+# print(Young_Insert(matrix, 6, m, n))
+
+# 将 n^2 个数进行排序，时间复杂度 n^2 * O(n+n) = O(n^3)
+def Sort(array, n):
+  Y = [[float("+inf")] * n for i in range(0, n)]
+  
+  for i in range(0, n**2):  # Python 中用 ** 表示次方
+    Young_Insert(Y, array[i], n-1, n-1)
+  
+  for i in range(0, n**2):
+    array[i] = Young_Extract_Min(Y, n-1, n-1)
+    
+  return array
+  
+array = [1, 2, 7, 4, 4, 8, 3, 1, 11, 15, 3, 6, 2, 5, 13, 9]
+n = int(math.sqrt(len(array)))  # sqrt 获得的是 float 类型，需将其转为 int 型
+# print(Sort(array, n))
+
+# 判断一个给定的数是否存储在 m*n 的 Young 式矩阵中，时间复杂度 O(m+n)
+def Find(Y, val):
+  # 从右上角开始查找/也可以从左下角开始查找
+  rows = len(Y)
+  cols = len(Y[0])
+  
+  row = 0
+  col = cols - 1
+  
+  while row < rows and col >= 0:
+    if Y[row][col] == val:
+      return True
+    elif Y[row][col] > val:
+      col -= 1
+    else:
+      row += 1
+      
+  return False
+
 matrix = [[2, 3, 12, 14], [4, 8, 16, float("+inf")], [5, 9, float("+inf"), float("+inf")],
           [float("+inf"), float("+inf"), float("+inf"), float("+inf")]]
 
-m = len(matrix)-1
-n = len(matrix[0])-1
-# print(Young_Extract_Min(matrix, m, n))
-print(Young_Insert(matrix, 6, m, n))
-
-
-
-
-
-
-
-
-
-
+print(Find(matrix, 5))
