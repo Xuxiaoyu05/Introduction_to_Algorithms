@@ -27,7 +27,7 @@ class Stack:
   def Pop(self):
     if self.is_empty():
       return "underflow"
-    return self.stack[-1]
+    return self.stack.pop()
     
     # else:
     #   S.top -= 1
