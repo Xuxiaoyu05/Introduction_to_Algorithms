@@ -16,7 +16,11 @@ class Queue:
   def enqueue(self, x):
     self.queue.append(x)
     
+    # if Q.head == Q.tail:
+    #   return "Queue overflow"
     # Q[Q.tail] = x
+    # if Q.head == None:
+    #   Q.head = Q.tail
     # if Q.tail == Q.length:
     #   Q.tail = 1
     # else:
@@ -27,11 +31,15 @@ class Queue:
       return "underflow"
     return self.queue.pop(0)
     
+    # if Q.head == None:
+    #   return "Queue underflow"
     # x = Q[Q.head]
     # if Q.head == Q.tail:
     #   Q.head = 1
     # else:
     #   Q.head = Q.head + 1
+    # if Q.head == Q.tail:
+    #   Q.head = None
     # return x
   
   def Size(self):
