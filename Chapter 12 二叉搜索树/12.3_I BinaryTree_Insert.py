@@ -15,7 +15,7 @@ class Tree:
 # 过程 Tree_Insert 在一棵高度为 h 的树上的运行时间为 O(h)
 def Tree_Insert(root, z):
   y = None
-  x = root
+  x = root  # 是浅拷贝，改变 x 的内容，root不会随之改变
   
   # 查找 z 要替换的 None（搜索 z 的位置）
   # y 是 x 的双亲
