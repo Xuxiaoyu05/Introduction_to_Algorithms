@@ -1,7 +1,7 @@
 # 查询：查找一个存储在二叉搜索树中的关键字。
 
 # 查询操作：（1）Search；（2）Minimum；（3）Maximum；（4）Successor；（5）Predecessor。时间复杂度均为 O(n)。
-
+# 定理：在一棵高度为 h 的二叉搜索树上，动态集合上的操作 Search、Minimum、Maximum、Successor、Predecessor 可以在 O(h) 时间内完成。
 
 class Tree:
   def __init__(self, x):
