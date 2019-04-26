@@ -3,6 +3,14 @@
 # 查询操作：（1）Search；（2）Minimum；（3）Maximum；（4）Successor；（5）Predecessor。时间复杂度均为 O(n)。
 
 
+class Tree:
+  def __init__(self, x):
+    self.val = x
+    self.left = None
+    self.right = None
+    self.parent = None
+
+
 # （1）Search：在一棵二叉搜索树中查找一个具有给定关键字的结点
 # 输入：一个指向树根的指针和一个关键字 k
 # 输出：一个指向关键字为 k 的结点的指针，否则返回 None
@@ -39,7 +47,7 @@ def Minimum(root):
   while root.left:
     root = root.left
     
-  return root.val
+  return root
   
   
 #（3）Maximum：最大关键字
@@ -53,7 +61,7 @@ def Maximum(root):
   while root.right:
     root = root.right
     
-  return root.val
+  return root
 
 
 #（4）Successor：后继
@@ -71,10 +79,10 @@ def Successor(x):
   if x.right:
     return Minimum(x.right)
   
-  y = x.p
+  y = x.parent
   while y != None and x == y.right:
     x = y
-    y = x.p
+    y = x.parent
     
   return y
 
@@ -86,4 +94,45 @@ def Successor(x):
 #                 即从 x 开始沿树向上直到遇到这样一个结点，这个结点是它双亲的右孩子。
 
 def Predecessor(x):
+  if x == None:
+    return None
+    
+  if x.left:
+    return Maximum(x.left)
   
+  y = x.parent
+  while y != None and x == y.left:
+    x = y
+    y = x.parent
+  
+  return y
+  
+
+def Create_BinaryTree(arr):
+  if len(arr) == 0:
+    return
+  
+  root = Tree(arr[0])
+  
+  if len(arr) >= 2:
+    root.left = Create_BinaryTree(arr[1])
+    if root.left != None:
+      root.left.parent = root
+  
+  if len(arr) >= 3:
+    root.right = Create_BinaryTree(arr[2])
+    if root.right != None:
+      root.right.parent = root
+ 
+  return root
+ 
+List = [15, [6, [3, [2], [4]], [7, [], [13, [9], []]]], [18, [17], [20]]]
+BinaryTree = Create_BinaryTree(List)
+print(Tree_Search_Recursive(BinaryTree, 13).val) 
+print(Tree_Search_Iterative(BinaryTree, 18).val)
+print(Minimum(BinaryTree).val) 
+print(Maximum(BinaryTree).val)
+print(Successor(Tree_Search_Iterative(BinaryTree, 15)).val)  # 15 的后继是 17
+print(Successor(Tree_Search_Iterative(BinaryTree, 13)).val)  # 13 的后继是 15
+print(Predecessor(Tree_Search_Iterative(BinaryTree, 7)).val) # 7 的前驱是 6
+print(Predecessor(Tree_Search_Iterative(BinaryTree, 17)).val) # 17 的前驱是 15
