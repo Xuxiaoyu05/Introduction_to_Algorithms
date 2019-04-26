@@ -24,9 +24,9 @@ def Tree_Insert(root, z):
     if z.val < x.val:
       x = x.left
     else:
-      x = x.right
+      x = x.right 
   
-  z.parent = y
+  z.parent = y  # 必须要有父结点，否则插入失败
   if y == None: # 树为空树
     root = y
   else:
