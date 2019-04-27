@@ -42,7 +42,10 @@ def Transplant(root, u, v):
   
   if v != None:
     v.parent = u.parent
-  
+
+# 除了调用 Minimum 之外，Tree_Delete 的每一行，包括调用 Transplant，都只花费常数时间。
+# 在一棵高度为 h 的树上，Tree_Delete 的运行时间为 O(h)
+
 def Tree_Delete(root, z):
   if z.left == None:
      Transplant(root, z, z.right)
@@ -100,3 +103,5 @@ List = [12, [5, [2], [9]], [18, [15, [], [17]], [19]]]
 BinaryTree = Create_BinaryTree(List)
 z = BinaryTree.right
 print(PreOrder_Tree(Tree_Delete(BinaryTree, z)))
+
+# 定理：在一棵高度为 h 的二叉搜索树上，实现动态集合操作 Insert 和 Delete 的运行时间为 O(h)。
