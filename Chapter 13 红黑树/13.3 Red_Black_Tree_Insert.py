@@ -3,7 +3,11 @@
 # 基本思想：(1) 利用 Tree_Insert 的略修改版本 RB_Treee_Insert 将新结点 z 插入树 T 内（将树 T 视为一棵普通的二叉搜索树），然后将 z 着为红色（不能是黑色）；
 #          (2) 为了保证红黑性质，调用辅助过程 RB_Insert_Fixup 来对结点进行重新着色并旋转。
 
-# 时间复杂度 O(lgn)
+# RB_Tree_Insert 时间复杂度 O(lgn):
+# 分析：由于一棵有 n 个结点的红黑树的高度为 O(lgn)，因此 RB_Insert 根据值寻找插入位置需要花费 O(lgn) 时间；
+#       在 RB_Insert_Fixup 中，仅当情况 1 发生，指针 z 沿着树上升两层，while 循环才会重复执行，所以 while 循环可能被执行的总次数为 O(lgn)；
+#       因此 RB_Tree_Insert 总共花费 O(lgn) 时间。
+#       此外，该程序所做的旋转从不超过 2 次，因为只要执行了情况 2 或情况 3，while 循环就结束了。
 
 
 class RB_Tree_Node:
@@ -13,7 +17,6 @@ class RB_Tree_Node:
     self.right = None
     self.parent = None
     self.color = color
-
 
 # RB_Insert_Fixup 过程（三步骤）：
 # 分析：当新结点 z 被插入并着为红色，可能被破坏的红黑性质：性质1、性质3、性质5继续成立；性质 2 和性质 4 可能被破坏（因为 z 被设置为红色）。
@@ -50,6 +53,8 @@ def Left_Rotate(root, x):
   
   y.left = x
   x.parent = y
+  
+  return root
    
 
 def Right_Rotate(root, x):
@@ -69,13 +74,14 @@ def Right_Rotate(root, x):
       
   y.right = x
   x.parent = y
-
+  
+  return root
   
 def RB_Tree_Insert_Fixup(root, z):
-  while z.parent.color == "RED":  # 性质 4 被破坏
+  while z.parent and z.parent.color == "RED":  # 性质 4 被破坏，需要判断 z 是否存在父结点
     if z.parent == z.parent.parent.left:  # 判断 z 的父结点和祖父结点的关系，因为 z.p 为红色，所以 z.p.p 必然存在
       y = z.parent.parent.right    # y 为 z 的叔结点
-      if y.color == "RED":  # 情况1
+      if y and y.color == "RED":  # 情况1，需要判断叔结点是否存在
         z.parent.color = "BLACK"
         y.color = "BLACK"
         z.parent.parent.color = "RED"
@@ -83,13 +89,13 @@ def RB_Tree_Insert_Fixup(root, z):
       else: # 叔结点为黑色
          if z == z.parent.right:  # 情况2
             z = z.parent
-            Left_Rotate(root, z)  # 左旋变为情况3
+            root = Left_Rotate(root, z)  # 左旋变为情况3
          z.parent.color = "BLACK"  # 情况3
          z.parent.parent.color = "RED"
-         Right_Rotate(root, z.parent.parent)
+         root = Right_Rotate(root, z.parent.parent)
     else: # z 为 z 祖父结点的右结点（与上边对称）
       y = z.parent.parent.left
-      if y.color == "RED":
+      if y and y.color == "RED":
         z.parent.color = "BLACK"
         y.color = "BLACK"
         z.parent.parent.color = "RED"
@@ -97,37 +103,15 @@ def RB_Tree_Insert_Fixup(root, z):
       else:
         if z == z.parent.right:
           z = z.p
-          Left_Rotate(root, z)
+          root = Left_Rotate(root, z)
         z.parent.color = "BLACK"
         z.parent.parent.color = "RED"
-        Right_Rotate(root, z.parent.parent)
+        root = Right_Rotate(root, z.parent.parent)
    
-  root.color = "BLACK"   # 修正性质 2 
-
-def RB_Tree_Insert_Val(root, val):
-  y = None
-  x = root
+  root.color = "BLACK"   # 修正性质 2
   
-  while x != None:
-    y = x
-    if val < x.val:
-      x = x.left
-    else:
-      x = x.right
-  
-  z = RB_Tree_Node(val)
-  z.parent = y
-  z.color = "RED" 
-  
-  if y == None:
-    root = z
-  else:
-    if val < y.val:
-      y.left = z
-    else:
-      y.right = z
-      
   return root
+
 
 def RB_Tree_Insert(root, z):
   y = None
@@ -152,17 +136,36 @@ def RB_Tree_Insert(root, z):
   # z.left = None
   # z.right = None
   
-  z.color = "RED"   # 将 z 设置为红色
+  z.color = "RED"   # 将 z 设置为红色(此步可以不需要，因为初始化的时候已经将 z 设置为红色了)
   
-  RB_Tree_Insert_Fixup(root, z)   # 维持红黑性质
+  root = RB_Tree_Insert_Fixup(root, z)   # 维持红黑性质，需要用 root 来平衡后的结果
   
- 
+  return root
+  
+def PreOrder_RB_Tree(root):
+  res = []
+  colors = []
+  stack = []
+  stack.append(root)
+  
+  while stack:
+    cur = stack.pop()
+    res.append(cur.val)
+    colors.append(cur.color)
+    
+    if cur.right:
+      stack.append(cur.right)
+    if cur.left:
+      stack.append(cur.left)
+  
+  return res, colors
+
 # 用插入的方式创建一棵红黑树
-Arr = [11, 2, 1, 7, 5, 8, 14, 15]
+Arr = [11, 2, 14, 1, 7, 15, 5, 8]
 root = None
 for i in Arr:
-  root = RB_Tree_Insert_Val(root, i)  # 此处必须要加 root =...，否则传入函数的 root 一直是 None
-print(root.val)  
-  
-
- 
+  root = RB_Tree_Insert(root, RB_Tree_Node(i))  # 此处必须要加 root =...，否则传入函数的 root 一直是 None
+print(PreOrder_RB_Tree(root))  # 结果：([11, 2, 1, 7, 5, 8, 14, 15], ['BLACK', 'RED', 'BLACK', 'BLACK', 'RED', 'RED', 'BLACK', 'RED'])
+# 插入值为 4 的结点
+root = RB_Tree_Insert(root, RB_Tree_Node(4))
+print(PreOrder_RB_Tree(root))  # ([7, 2, 1, 5, 4, 11, 8, 14, 15], ['BLACK', 'RED', 'BLACK', 'BLACK', 'RED', 'RED', 'BLACK', 'BLACK', 'RED'])
