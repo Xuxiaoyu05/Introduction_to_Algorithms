@@ -168,4 +168,4 @@ for i in Arr:
 print(PreOrder_RB_Tree(root))  # 结果：([11, 2, 1, 7, 5, 8, 14, 15], ['BLACK', 'RED', 'BLACK', 'BLACK', 'RED', 'RED', 'BLACK', 'RED'])
 # 插入值为 4 的结点
 root = RB_Tree_Insert(root, RB_Tree_Node(4))
-print(PreOrder_RB_Tree(root))  # ([7, 2, 1, 5, 4, 11, 8, 14, 15], ['BLACK', 'RED', 'BLACK', 'BLACK', 'RED', 'RED', 'BLACK', 'BLACK', 'RED'])
+print(PreOrder_RB_Tree(root))  # 结果：([7, 2, 1, 5, 4, 11, 8, 14, 15], ['BLACK', 'RED', 'BLACK', 'BLACK', 'RED', 'RED', 'BLACK', 'BLACK', 'RED'])
