@@ -68,9 +68,9 @@ def Right_Rotate(root, x):
     root = y
   else:
     if x == x.parent.left:
-      y = x.parent.left
+      x.parent.left = y
     else:
-      y = x.parent.right
+      x.parent.right = y
       
   y.right = x
   x.parent = y
@@ -102,7 +102,7 @@ def RB_Tree_Insert_Fixup(root, z):
         z = z.parent.parent
       else:
         if z == z.parent.right:
-          z = z.p
+          z = z.parent
           root = Left_Rotate(root, z)
         z.parent.color = "BLACK"
         z.parent.parent.color = "RED"
