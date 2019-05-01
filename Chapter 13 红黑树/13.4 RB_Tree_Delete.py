@@ -41,9 +41,6 @@ def RB_Transplant(root, u, v):
 # 黑色或者红黑色，这就分别给包含 x 的简单路径上黑结点数贡献了 2 或 1。x 的 color 属性仍为 RED（如果 x 是红黑色的）或 BLACK（如果 x 是双重黑色的）。
 # 即结点额外的黑色是针对 x 结点的，而不是反映在它的 color 属性上的。
 
-
-
-
 def Minimum(x):
   while x.left:
     x = x.left
@@ -81,4 +78,14 @@ def RB_Tree_Delete(root, z):
     if y_original_color == "BLACK":  # 如果结点 y 为黑色，就有可能引入了一个或多个红黑性质被破坏的情况，需要调用 RB_Delete_Fixup 来恢复红黑性质
       RB_Delete_Fixup(T, x) 
       
-    
+# while 循环的目标是将额外的黑色沿树上移，直到：
+#（1）x 指向红黑结点，此时在最后一行中，将 x 着为（单个）黑色；
+#（2）x 指向根结点，此时可以简单的“移除”额外的黑色；
+#（3）执行适当的旋转和重新着色，退出循环。
+
+# 在 while 循环中，x 总是指向一个具有双重黑色的非根结点。第 2 行中要判断 x 是其父结点 x.p 的左孩子还是右孩子（代码对称）。
+# 保证指针 w 指向 x 的兄弟，由于结点 x 是双重黑色的，故 w 不可能是 None（因为否则，从 x.p 至（单黑色）叶子 w 的简单路径上的黑结点个数就会小于从x.p到
+#  x 的简单路径上的黑结点数）。
+# 4 种情况：
+def RB_Tree_Delete_Fixup(root, x):
+  
