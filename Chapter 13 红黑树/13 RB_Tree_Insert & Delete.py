@@ -129,8 +129,126 @@ class RB_Tree:
           self.Left_Rotate(z.parent.parent)
       
     root.color = "BLACK"   # 恢复性质 2
+  
+  # 前序遍历
+  def PreOrder_RB_Tree(self):
+    res = []
+    colors = []
+    stack = []
+    stack.append(self.root)
+    
+    while stack:
+      cur = stack.pop()
+      res.append(cur.val)
+      colors.append(cur.color)
       
+      if cur.right:
+        stack.append(cur.right)
+      if cur.left:
+        stack.append(cur.left)
+      
+    return res, colors
+  
+  
+  # 创建一棵红黑树
+  def Create_RB_Tree(self, arr):
+    for i in arr:
+      self.root = RB_Tree_Insert(RB_Node(i))
+    
+    # 前序遍历输出构建的树
+    print(PreOrder_RB_Tree())
+    
+  def RB_Tree_Node_Transplant(self, u, v):
+    if u.parent == None:
+      self.root = v
+    else:
+      if u == u.parent.left:
+        u.parent.left = v
+      else:
+        u.parent.right = v
+    
+    if v != None:
+      v.parent = u.parent
+  
+  # 寻找树中最小的结点
+  def Find_Minimum(self, x):
+    while x.left:
+      x = x.left
+    return x
+  
+  
+  # 删除红黑树中的结点
+  def RB_Tree_Delete(self, z):
+    y = z    # y 始终指向树中待删除或待移动的结点，x 结点为将移到树中 y 位置的结点
+    y_original_color = z.color
+    
+    if z.left == None:                         # 情况1：z 的左孩子为空，右孩子可为空或不为空
+      x = z.right                              # 解决方法：用 z.right 来替代 z
+      RB_Tree_Node_Transplant(z, z.right)      
+    elif z.right == None:                      # 情况2：z 的左孩子不为空，右孩子为空
+      RB_Tree_Node_Transplant(z, z.left)       # 解决方法：用 z.left 来替代 z
+    else: # 情况3：当 z 的左右孩子都存在，在右子树中寻找其后继结点
+      y = Find_Minimum(z.right)
+      y_original_color = y.color
+      
+      x = y.right
+      
+      if y.parent != z: # 如果 y 不是 z 的右孩子
+        RB_Tree_Node_Transplant(y, y.right)
+        y.right = z.right
+        y.right.parent = y
+      
+      RB_Tree_Node_Transplant(z, y)
+      y.left = z.left
+      y.left.parent = y
+      
+      y.color = z.color       # 不要忘了将 y 的颜色更改为 z 的颜色
+    
+    
+    if y_original_color == "BLACK":     # 如果 y 的原始颜色为红色，那么将不会破坏红黑性质；
+      RB_Tree_Delete_Fixup(x)           # 如果 y 的原始颜色为黑色，则需要调用 RB_Tree_Delete_Fixup(x) 来维持整棵树的红黑性质
    
-   # 创建一棵红黑树
-   def Create_RB_Tree(self, arr):
+  # 删除后调整树以维持红黑性质
+  def RB_Tree_Delete_Fixup(self, x):
+    # 可能会被破坏的性质为：
+    #（1）性质2（y 是根结点，它的红色孩子成为新的根结点）；
+    #（2）性质4（x 和 x.p 都为红色）；
+    #（3）性质5（黑色结点的删除或移动导致y的祖先的黑高改变）; 解决方法：将占有 y 位置的结点 x 视为还有额外的黑色，x 为双重黑色或红黑色
+    
+    while x and x.color == "BLACK":  # 当 x 的颜色为红色时退出循环
+      # 根据 x 和其父结点 x.parent 之间的关系分为两大类情况
+      if x == x.parent.left:
+        w = x.parent.right     # w 是 x 的兄弟结点
+        if w.color == "RED":   # 情况1：w 的颜色是红色
+          w.color = "BLACK"    # 解决方法：将其转换为情况 2,3,4 处理，w 改为黑色，x.parent 改为红色并左旋，更改 w 为 x 的新的兄弟结点
+          x.parent.color = "RED"
+          Left_Rotate(x.parent)
+          w = x.parent.right    # 此时 w 的颜色一定是黑颜色
+        
+        if w.left.color == "BLACK" and w.right.color == "BLACK":   # 情况2：w 为黑色且其左右孩子均为黑色
+          w.color = "RED"                                          # 解决方法：将 w 的颜色改为红色，x 上移
+          x = x.parent
+        else:
+          if w.right.color == "BLACK":   # 情况3：w 为黑色且其右孩子为黑色，左孩子为红色
+            w.left.color = "BLACK"       # 解决方法：转为情况4，将 w.left 改为黑色，w 改为红色，并将 w 右旋，更改 w 为 x 的新的兄弟结点
+            w.color = "RED"
+            Right_Rotate(w)
+            w = x.parent.right
+          
+          w.color = x.parent.color
+          x.parent.color = "BLACK"
+          w.right.color = "BLACK"
+          Left_Rotate(x.parent)
+          x = root
+     else:   # x == x.parent.right
+      w = x.parent.left
+      
+      
+          
+        
+    
+    
+    x.color = "BLACK"     # 若 x 为红色，将其颜色置为黑色
+      
+    
     
