@@ -1,6 +1,5 @@
 # 红黑树的插入与删除
 
-
 # 定义红黑树结点
 class RB_Node:
   def __init__(self, val, color = "RED"):
@@ -16,7 +15,7 @@ class RB_Tree:
     self.root = None
 
 
-  # 左旋
+  # 左旋O(1)
   def Left_Rotate(self, x):
     y = x.right
     x.right = y.left
@@ -38,7 +37,7 @@ class RB_Tree:
     x.parent = y
     
   
-  # 右旋
+  # 右旋O(1)
   def Right_Rotate(self, x):
     y = x.left
     x.left = y.right
@@ -60,7 +59,7 @@ class RB_Tree:
     x.parent = y
     
    
-  # 向红黑树中插入结点
+  # 向红黑树中插入结点O(lgn)
   def RB_Tree_Insert(self, z):
     y = None
     x = self.root
@@ -88,7 +87,7 @@ class RB_Tree:
     self.RB_Tree_Insert_Fixup(z)  # 调整整棵树以保持红黑性质
   
   
-  # 插入后调整树以维持红黑性质
+  # 插入后调整树以维持红黑性质O(lgn)
   def RB_Tree_Insert_Fixup(self，z):   # 只有性质 2 和 4 可能被破坏
     while z.parent and z.parent.color == "RED":  # 性质 4 被破坏，但需要先判断 z 的父结点是否存在
       # 根据 z.parent 和 z.parent.parent 的关系分为两种情形：
@@ -128,7 +127,7 @@ class RB_Tree:
           z.parent.parent.color = "RED"
           self.Left_Rotate(z.parent.parent)
       
-    root.color = "BLACK"   # 恢复性质 2
+    self.root.color = "BLACK"   # 恢复性质 2
   
   # 前序遍历
   def PreOrder_RB_Tree(self):
@@ -177,7 +176,7 @@ class RB_Tree:
     return x
   
   
-  # 删除红黑树中的结点
+  # 删除红黑树中的结点O(lgn)
   def RB_Tree_Delete(self, z):
     y = z    # y 始终指向树中待删除或待移动的结点，x 结点为将移到树中 y 位置的结点
     y_original_color = z.color
@@ -208,7 +207,7 @@ class RB_Tree:
     if y_original_color == "BLACK":     # 如果 y 的原始颜色为红色，那么将不会破坏红黑性质；
       RB_Tree_Delete_Fixup(x)           # 如果 y 的原始颜色为黑色，则需要调用 RB_Tree_Delete_Fixup(x) 来维持整棵树的红黑性质
    
-  # 删除后调整树以维持红黑性质
+  # 删除后调整树以维持红黑性质O(lgn)
   def RB_Tree_Delete_Fixup(self, x):
     # 可能会被破坏的性质为：
     #（1）性质2（y 是根结点，它的红色孩子成为新的根结点）；
@@ -235,19 +234,35 @@ class RB_Tree:
             Right_Rotate(w)
             w = x.parent.right
           
-          w.color = x.parent.color
+          w.color = x.parent.color       # 情况4：w 为黑色且其右孩子为红色
           x.parent.color = "BLACK"
           w.right.color = "BLACK"
           Left_Rotate(x.parent)
-          x = root
-     else:   # x == x.parent.right
+          x = self.root
+     else:   # x == x.parent.right （对称的）
       w = x.parent.left
-      
-      
-          
+      if w.color == "RED":  # 情况1：w 结点是红色的
+        w.color = "BLACK"
+        x.parent.color = "RED"
+        Right_Rotate(x.parent)
+        w = x.parent.left
+     
+      if w.left.color == "BLACK" and w.right.color == "BLACK"   # 情况2：w 及其左右孩子都为黑色
+        w.color = "RED"
+        x = x.parent
+      else:
+        if w.right.color == "BLACK":   # 情况3：w 为黑色，其左孩子为红色，右孩子为黑色
+          w.color = "RED"
+          w.left.color = "BLACK"
+          Right_Rotate(w)
+          w = x.parent.left
         
-    
-    
+        w.color = x.parent.color
+        x.parent.color = "BLACK"
+        w.right.color = "BLACK"
+        Right_Rotate(x.parent)
+        x = self.root
+
     x.color = "BLACK"     # 若 x 为红色，将其颜色置为黑色
       
     
